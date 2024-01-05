@@ -12,7 +12,7 @@ class ApiController extends AbstractController
     public function index(): JsonResponse
     {
         return $this->json([
-            'message' => 'Welcome to your new controller!',
+            'message' => 'Welcome from Symfony!',
             'path' => 'src/Controller/ApiController.php',
         ]);
     }
