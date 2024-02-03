@@ -1,15 +1,6 @@
 doctrine:
     dbal:
-        driver: 'pdo_mysql'
-        host: '127.0.0.1'
-        port: 3309 
-        dbname: 'rowerovo'
-        user: 'root'
-        password: 'pass'
-        charset: utf8mb4
-        default_table_options:
-            charset: utf8mb4
-            collate: utf8mb4_unicode_ci
+        url: '%env(resolve:DATABASE_URL)%'
 
         profiling_collect_backtrace: '%kernel.debug%'
     orm:

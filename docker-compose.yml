@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+    backend-web:
+        image: nginx:latest
+        ports:
+          - "8070:80"
+        volumes:
+          - ./nginx/conf.d/:/etc/nginx/conf.d/
+          - ./symfony/:/var/www/html/
+        networks:
+          - symfony
+        depends_on:
+          - backend-app
+    backend-app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ./symfony/:/var/www/html/
+        networks:
+            - symfony
+        depends_on:
+            backend_mysql:
+                condition: service_healthy
+    backend_mysql:
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: rowerovo
+        healthcheck:
+            test: mysqladmin ping -h 127.0.0.1 -u root --password=root
+            start_period: 5s
+            interval: 5s
+            timeout: 5s
+            retries: 55
+        volumes:
+            - backend_mysql:/var/lib/mysql
+        ports:
+          - "3306:3306"
+        networks:
+            - symfony
+volumes:
+    backend_mysql:
+networks:
+    symfony:
